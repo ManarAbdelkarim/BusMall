@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@300&display=swap');
+
+*{
+    box-sizing: border-box;
+}
+p{
+    font-family: 'Lato', sans-serif;
+}
+
+header{
+    width:100%;
+    background-image: url('../img/background/blue-background\ \(2\).png');
+    height: 120px;
+}
+
+
+header div{
+    width: 50%;
+}
+
+header h1{
+    display: block;
+    width: max-content;
+    font-size: xxx-large;
+    font-weight: bolder;
+    line-height: 0;
+    float: left;
+    margin: 7% 5% 5% 0;
+  }
+
+
+img{
+    width:30%;
+    max-height: 300px;
+}
+
+header img{
+    float: left;
+    width: 8%;
+    margin: 1%;
+    display: inline;
+}
+#combine{
+    margin: 28px;
+    width: 100%;
+}
+
+
+.results{
+    width: 21%;
+    display: inline-block;
+    margin-left: 3%;
+}
+
+.results ul{
+    line-height: 1.2;
+    font-size: larger;
+}
+.results li{
+    list-style-type: disc;
+}
+
+.main-section{
+    width: 66%;
+    display: inline-block;
+}
+#lorem{
+    margin-top: 3%;
+    font-size: larger;
+    line-height: 1.7;
+    font-weight:500;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -50px;
+  }
+  footer{
+    clear: both;
+    width: 100%;
+    background-image: url('../img/background/blue-background\ \(2\).png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 10%;
+    text-align: center;
+    position: relative;
+    padding: 3%;
+   
+}
+footer div{
+    width: 11%;
+    margin: 0 auto;
+}
+footer a , footer h5 ,footer h4 , footer p {
+    text-decoration: none;
+    color: #070c11 !important;
+    margin-top: 1%;
+    line-height: 1.2;
+    font-size: large;
+    font-weight: 600;
+  }
+
+/* footer div{
+    display: inline-block;
+    width: 7%;
+    margin: 0 47% auto;
+} */
+footer div{
+    width:max-content;
+  }
