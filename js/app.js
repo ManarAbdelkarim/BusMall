@@ -7,12 +7,12 @@ const imageList = ['bag','banana','bathroom','boots','breakfast','bubblegum','ch
 let counter = 1;
 
 let firstImage = document.getElementById('first-image');
-console.log(firstImage);
+// console.log(firstImage);
 let secondImage = document.getElementById('second-image');
-console.log(secondImage);
+// console.log(secondImage);
 let thirdImage = document.getElementById('third-image');
 let section = document.getElementById('main-section');
-console.log(thirdImage);
+// console.log(thirdImage);
 
 let imageId= [firstImage,secondImage,thirdImage];
 
@@ -53,16 +53,25 @@ for (let i = 0; i < imageList.length; i++) {
   Images.all[i].generateExtension();
   Images.all[i].generatePath();
 }
-
-
-
+let countText = document.getElementById('counter');
+let coun =0;
+let arrCopy =[];
 function render(){
+  console.log(arrCopy);
   let count = 0 ;
   let arr = [];
   let val;
+  let valCopy;
   let correct = true;
   while(count !== 3){
-    val = randomNumber(0,imageList.length-1);
+    valCopy = randomNumber(0,imageList.length-1);
+
+    if (arrCopy.includes(valCopy) === false) {
+      val = valCopy;
+    }
+    else{
+      continue;
+    }
     for (let i = 0; i < arr.length; i++) {
       if (val === arr[i]) {
         correct = false;
@@ -75,8 +84,9 @@ function render(){
       arr.push(val);
       count++;
     }
-  }
 
+  }
+  arrCopy = arr;
   for (let i = 0; i < arr.length; i++) {
     imageId[i].src = Images.all[arr[i]].path;
     imageId[i].title = Images.all[arr[i]].name;
@@ -84,47 +94,51 @@ function render(){
     Images.all[arr[i]].visits++;
     // console.log('this is the visitors for' + Images.all[arr[i]].name + ' ' + Images.all[arr[i]].visits);
   }
+  coun++;
+  countText.innerHTML = `${coun} of 25`;
 }
 render();
 
 section.addEventListener('click', handleClick);
 
 function handleClick(event) {
-  if (counter>25) {
-    section.removeEventListener('click', handleClick);
-  }
-  else{
-    console.log('counter =' ,counter);
-    console.log('Target', event.target.id);
-    if (event.target.id !== 'main-section') {
-      for (let i = 0; i < Images.all.length; i++) {
-        if (Images.all[i].name === event.target.title) {
-          Images.all[i].votes++;
-          console.log('this is the voters for' + Images.all[i].name + ' ' + Images.all[i].votes);
-          break;
+
+
+  // console.log('counter =' ,counter);
+  // console.log('Target', event.target.id);
+  if (event.target.id !== 'main-section') {
+    for (let i = 0; i < Images.all.length; i++) {
+      if (Images.all[i].name === event.target.title) {
+        Images.all[i].votes++;
+        // console.log('this is the voters for' + Images.all[i].name + ' ' + Images.all[i].votes);
+        break;
         // Goat.all[i].votes = Goat.all[i].votes + 1
-        }
       }
-      console.log(Images.all);
-      if(counter !== 25){
-        counter++;
-        render();
-      }
+    }
+    // console.log(Images.all);
+    if(counter !== 25){
+      counter++;
+      render();
+    }
 
 
-      else if (counter === 25) {
-        showData();
-        counter++;
-      }
+    else if (counter === 25) {
+      showData();
+      counter++;
+      section.removeEventListener('click', handleClick);
+      showStatistics();
+      alert('the servery has finished ');
     }
   }
 }
+
 
 
 let results = document.getElementById('results');
 let ulEl = document.createElement('ul');
 results.appendChild(ulEl);
 let liEl = document.createElement('li');
+
 function showData(){
   for (let i = 0; i < Images.all.length; i++) {
     liEl = document.createElement('li');
@@ -133,24 +147,63 @@ function showData(){
   }
 
 }
-//   function showData(){
-//     for (let i = 0; i < Images.all.length; i++) {
-//  }
 
 
+function showStatistics() {
+  document.getElementById('canvas').style.display = 'block';
+  const ctx = document.getElementById('chart').getContext('2d');
 
+  const productNames = [];
+  const productVotes = [];
+  const productVisits = [];
+  for (let i = 0; i < Images.all.length; i++) {
+    productNames.push(Images.all[i].name);
+    productVotes.push(Images.all[i].votes);
+    productVisits.push(Images.all[i].visits);
+  }
+  console.log('Votes', productVotes);
+  new Chart(ctx, {
+    type: 'bar',
+    animationEnabled: true,
+    title:{
+      text: 'The statistics of visits and votes for 25 rounds'
+    },
+    toolTip: {
+      shared: true
+    },
+    legend: {
+      cursor:'pointer',
+    },
+    data: {
+      labels: productNames,
+      type: 'column',
+      name: 'number of visits',
+      datasets: [{
 
-//   firstImage.src = Images.all[arr[0]].path;
-//   firstImage.title = Images.all[arr[0]].name;
-//   firstImage.alt = Images.all[arr[0]].name;
+        barPercentage: 1,
+        borderWidth: 2,
+        label: 'No of visits:',
+        backgroundColor: 'rgba(47, 47, 175, 0.90)',
+        borderColor: 'rgb(0, 0, 0)',
+        data:productVisits ,
+      },
 
-//   secondImage.src = Images.all[arr[1]].path;
-//   secondImage.title = Images.all[arr[1]].name;
-//   secondImage.alt = Images.all[arr[1]].name;
+      {
+        axisYType: 'secondary',
+        barPercentage: 1,
+        borderWidth: 2,
+        label: 'No of votes:',
+        backgroundColor: 'rgba(205, 92, 92, 0.90)',
+        borderColor: 'rgb(0, 0, 0)',
+        data:productVotes ,
 
-//   thirdImage.src = Images.all[arr[2]].path;
-//   thirdImage.title = Images.all[arr[2]].name;
-//   thirdImage.alt = Images.all[arr[2]].name;
+      }
+      ],
+    },
+
+    options: {},
+  });
+}
 
 
 
