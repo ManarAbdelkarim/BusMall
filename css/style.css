@@ -13,6 +13,13 @@ header{
     height: 120px;
 }
 
+#counter{
+    width: 10%;
+    margin: 2% auto;
+    font-size: larger;
+    font-weight: bold;
+    font-family:'Times New Roman', Times, serif;
+}
 
 header div{
     width: 50%;
@@ -64,12 +71,14 @@ header img{
     width: 66%;
     display: inline-block;
 }
-#lorem{
+#canvas{
     margin-top: 3%;
     font-size: larger;
     line-height: 1.7;
     font-weight:500;
-}
+    background-color:rgb(245, 243, 243);
+    display: none;
+ }
 
 .wrapper {
     min-height: 100%;
