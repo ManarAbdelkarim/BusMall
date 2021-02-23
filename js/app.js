@@ -5,6 +5,7 @@ const imageList = ['bag','banana','bathroom','boots','breakfast','bubblegum','ch
   'unicorn','usb','water-can','wine-glass'
 ];
 let counter = 1;
+let Stored ;
 
 let firstImage = document.getElementById('first-image');
 // console.log(firstImage);
@@ -19,6 +20,17 @@ let imageId= [firstImage,secondImage,thirdImage];
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
+if (localStorage.getItem('storedProducts') !== null) {
+
+  Images.all = JSON.parse(localStorage.getItem('storedProducts'));
+  Stored = Images.all;
+  console.log('Images stored', Images.all);
+  console.log('copy Stored', Stored);
+
+}
+
 Images.all = [];
 function Images(name){
   this.name = name;
@@ -63,6 +75,15 @@ function render(){
   let val;
   let valCopy;
   let correct = true;
+
+
+  //   console.log('Data found');
+  //   Images.all = JSON.parse(localStorage.getItem('storedProducts'));
+  // } else {
+  //   console.log('Not found');
+  //   localStorage.setItem('storedProducts', JSON.stringify(Images.all));
+  // }
+
   while(count !== 3){
     valCopy = randomNumber(0,imageList.length-1);
 
@@ -88,28 +109,47 @@ function render(){
   }
   arrCopy = arr;
   for (let i = 0; i < arr.length; i++) {
+    debugger;
     imageId[i].src = Images.all[arr[i]].path;
     imageId[i].title = Images.all[arr[i]].name;
     imageId[i].alt = Images.all[arr[i]].name;
     Images.all[arr[i]].visits++;
+
     // console.log('this is the visitors for' + Images.all[arr[i]].name + ' ' + Images.all[arr[i]].visits);
+  }
+  for (let i = 0; i < arr.length; i++) {
+    if (Stored) {
+      if (Images.all[arr[i]].visits === 1 ) {
+        Images.all[arr[i]].visits += parseInt(Stored[arr[i]].visits);
+        console.log('visited Item',Images.all[arr[i]].name ,Images.all[arr[i]].visits);
+      }
+
+    }
   }
   coun++;
   countText.innerHTML = `${coun} of 25`;
 }
+
 render();
+if (Stored) {
+  debugger;
+  for (let i = 0; i < Images.all.length; i++) {
+
+    Images.all[i].votes = Stored[i].votes;
+  }
+}
 
 section.addEventListener('click', handleClick);
 
 function handleClick(event) {
-
-
+  debugger;
   // console.log('counter =' ,counter);
   // console.log('Target', event.target.id);
   if (event.target.id !== 'main-section') {
     for (let i = 0; i < Images.all.length; i++) {
       if (Images.all[i].name === event.target.title) {
         Images.all[i].votes++;
+
         // console.log('this is the voters for' + Images.all[i].name + ' ' + Images.all[i].votes);
         break;
         // Goat.all[i].votes = Goat.all[i].votes + 1
@@ -128,6 +168,8 @@ function handleClick(event) {
       section.removeEventListener('click', handleClick);
       showStatistics();
       alert('the servery has finished ');
+      localStorage.setItem('storedProducts', JSON.stringify(Images.all));
+      console.log('new storedProduct',localStorage.getItem('storedProducts'));
     }
   }
 }
@@ -138,7 +180,6 @@ let results = document.getElementById('results');
 let ulEl = document.createElement('ul');
 results.appendChild(ulEl);
 let liEl = document.createElement('li');
-
 function showData(){
   for (let i = 0; i < Images.all.length; i++) {
     liEl = document.createElement('li');
@@ -204,6 +245,5 @@ function showStatistics() {
     options: {},
   });
 }
-
 
 
